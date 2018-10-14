@@ -67,7 +67,7 @@ class BooksApp extends Component {
   }
 
   render() {
-    const {books, query} = this.state;
+    const {books, query, currentlyReading, wantToRead, read} = this.state;
 
     return (
       <div className="app">
@@ -75,7 +75,7 @@ class BooksApp extends Component {
             <Search books={books} query={query} handleInputChange={this.handleInputChange} addBook={this.addBook}></Search>
           )}></Route>
           <Route exact path='/' render={() => (
-            <Home changeShelf={this.changeShelf}></Home>
+            <Home changeShelf={this.changeShelf} currentlyReading={currentlyReading} wantToRead={wantToRead} read={read}></Home>
           )}></Route>
       </div>
     )

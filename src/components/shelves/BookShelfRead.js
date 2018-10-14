@@ -3,6 +3,9 @@ import React, {Component}  from 'react'
 class BookShelfRead extends Component {
 
   render() {
+
+		const {changeShelf, read} = this.props;
+
     return (
 			<div className="bookshelf">
 				<h2 className="bookshelf-title">Read</h2>

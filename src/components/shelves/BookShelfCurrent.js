@@ -4,7 +4,7 @@ class BookShelfCurrent extends Component {
 
   render() {
 
-		const {changeShelf} = this.props;
+		const {changeShelf, currentlyReading} = this.props;
 
     return (
 			<div className="bookshelf">
