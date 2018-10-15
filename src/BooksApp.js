@@ -8,43 +8,68 @@ import {Route} from 'react-router-dom'
 class BooksApp extends Component {
 	state = {
     books: [],
-		currentlyReading: [],
-		wantToRead: [],
-    read: [],
     query: ''
   };
   
   addBook = (e, id) => {
-    const result = this.state.books.find(item => {
-      return item.id === id
+
+    let aux = this.state.books
+
+    aux.find(book => {
+      book.id === id && (
+        book.shelf = e.target.value
+      )
     });
 
+    this.setState({
+      books: aux
+    });
+
+    /*find the book to add to the proper category.
+    const result = this.state.books.find(book => {
+      return book.id === id
+    });
+
+    remove the added book from books so it doesn't show on search anymore.
+    const newBooks = this.state.books.filter(book => {
+      return book.id !== id
+     });
+
     if(e.target.value === 'currentlyReading'){
-      console.log("Here1");
       this.setState((previousState) => ({
         currentlyReading: previousState.currentlyReading.concat(result)
       }))
+
+      this.setState({
+        books: newBooks
+      });
 
       BooksAPI.update(result, "currentlyReadying");
     };
 
     if(e.target.value === 'wantToRead'){
-      console.log("Here2");
       this.setState((previousState) => ({
         wantToRead: previousState.wantToRead.concat(result)
       }))
+
+      this.setState({
+        books: newBooks
+      });
 
       BooksAPI.update(result, "wantToRead");
     };
 
     if(e.target.value === 'read'){
-      console.log("Here3");
       this.setState((previousState) => ({
         read: previousState.read.concat(result)
       }))
 
+      this.setState({
+        books: newBooks
+      });
+
       BooksAPI.update(result, "read");
-    }
+    }*/
   }
 
   changeShelf = (e) => {
@@ -75,7 +100,7 @@ class BooksApp extends Component {
             <Search books={books} query={query} handleInputChange={this.handleInputChange} addBook={this.addBook}></Search>
           )}></Route>
           <Route exact path='/' render={() => (
-            <Home changeShelf={this.changeShelf} currentlyReading={currentlyReading} wantToRead={wantToRead} read={read}></Home>
+            <Home changeShelf={this.changeShelf} currentlyReading={currentlyReading} wantToRead={wantToRead} read={read} books={books}></Home>
           )}></Route>
       </div>
     )

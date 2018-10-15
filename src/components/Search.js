@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 
 class Search extends Component {
 
@@ -16,7 +17,7 @@ class Search extends Component {
         <li key={book.id}>
           <div className="book">
             <div className="book-top">
-              <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail })` }}></div>
+              <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
               <div className="book-shelf-changer">
                 <select onChange={(e) => addBook(e, book.id)}>
                   <option value="move">Move to...</option>
@@ -37,7 +38,7 @@ class Search extends Component {
         <div>
             <div className="search-books">
             <div className="search-books-bar">
-              <a className="close-search">Close</a>
+              <Link to="/" className="close-search">Close</Link>
               <div className="search-books-input-wrapper">
                 {/*
                   NOTES: The search from BooksAPI is limited to a particular set of search terms.
