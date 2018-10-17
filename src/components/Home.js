@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom';
 class Home extends Component {
 
   render() {
-		const {changeShelf, currentlyReading, wantToRead, read, books} = this.props;
+		const {changeShelf, books} = this.props;
 
     return (
 			<div className="list-books">
@@ -17,9 +17,9 @@ class Home extends Component {
 				</div>
 				<div className="list-books-content">
 					<div>
-						<BookShelfCurrent changeShelf={changeShelf} currentlyReading={books}></BookShelfCurrent>
-						<BookShelfWant wantToRead={books}></BookShelfWant>
-						<BookShelfRead read={books}></BookShelfRead>
+						<BookShelfCurrent changeShelf={changeShelf} books={books}></BookShelfCurrent>
+						<BookShelfWant changeShelf={changeShelf} books={books}></BookShelfWant>
+						<BookShelfRead changeShelf={changeShelf} books={books}></BookShelfRead>
 					</div>
 				</div>
 				<div className="open-search">

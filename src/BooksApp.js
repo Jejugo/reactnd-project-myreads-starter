@@ -11,69 +11,52 @@ class BooksApp extends Component {
     query: ''
   };
   
-  addBook = (e, id) => {
-
-    let aux = this.state.books
-
-    aux.find(book => {
-      book.id === id && (
-        book.shelf = e.target.value
-      )
+  addBook = (e, book) => {
+    let aux = this.state.books;
+    var find = false;
+  
+    aux.find(bookItem => {
+      if (bookItem.id === book.id){
+        bookItem.shelf = e.target.value;
+        find = true;
+      }
     });
-
+    
+    if(!find){
+      book["shelf"] = e.target.value;
+      aux.push(book);
+    }
+    
     this.setState({
       books: aux
     });
 
-    /*find the book to add to the proper category.
-    const result = this.state.books.find(book => {
-      return book.id === id
-    });
-
-    remove the added book from books so it doesn't show on search anymore.
-    const newBooks = this.state.books.filter(book => {
-      return book.id !== id
-     });
-
-    if(e.target.value === 'currentlyReading'){
-      this.setState((previousState) => ({
-        currentlyReading: previousState.currentlyReading.concat(result)
-      }))
-
-      this.setState({
-        books: newBooks
-      });
-
-      BooksAPI.update(result, "currentlyReadying");
-    };
-
-    if(e.target.value === 'wantToRead'){
-      this.setState((previousState) => ({
-        wantToRead: previousState.wantToRead.concat(result)
-      }))
-
-      this.setState({
-        books: newBooks
-      });
-
-      BooksAPI.update(result, "wantToRead");
-    };
-
-    if(e.target.value === 'read'){
-      this.setState((previousState) => ({
-        read: previousState.read.concat(result)
-      }))
-
-      this.setState({
-        books: newBooks
-      });
-
-      BooksAPI.update(result, "read");
-    }*/
   }
 
-  changeShelf = (e) => {
-    console.log(e.target.value);
+  changeShelf = (e, id) => {
+    if(e.target.value === 'none'){
+      //continuar daqui!
+      const aux = this.state.books.filter(book => {
+        return book.id !== id
+      });
+      this.setState({
+        books: aux
+      });
+    }
+
+    else{
+      let aux = this.state.books;
+
+      aux.find(bookItem => {
+        if (bookItem.id === id){
+          bookItem.shelf = e.target.value;
+        }
+      });
+
+      this.setState({
+        books: aux
+      });
+    }
   }
 
   componentDidMount(){

@@ -4,9 +4,8 @@ class BookShelfCurrent extends Component {
 
   render() {
 
-		const {changeShelf, currentlyReading} = this.props;
-
-		const readingList = currentlyReading.map(book => {
+		const {changeShelf, books} = this.props;
+		const readingList = books.map(book => {
 			if (book.shelf === "currentlyReading"){
 				return (
 					<li key={book.id}>
@@ -14,8 +13,8 @@ class BookShelfCurrent extends Component {
 							<div className="book-top">
 								<div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail })` }}></div>
 								<div className="book-shelf-changer">
-									<select onChange={(e) => changeShelf(e)}>
-										<option value="move" disabled>Move to...</option>
+									<select onChange={(e) => changeShelf(e, book.id)}>
+										<option value="move">Move to...</option>
 										<option value="currentlyReading">Currently Reading</option>
 										<option value="wantToRead">Want to Read</option>
 										<option value="read">Read</option>

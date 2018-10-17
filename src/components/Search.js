@@ -1,16 +1,42 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import * as BooksAPI from '../BooksAPI'
 
 class Search extends Component {
 
+  state = {
+    choice: 'Android',
+    booksFilter: []
+  }
+
+  choiceMade = (e) => {
+    const newChoice = e.target.value
+    this.setState({
+      choice: newChoice
+    });
+
+    BooksAPI.search(newChoice).then(books => {
+      this.setState({
+        booksFilter: books
+      });
+    })
+  }
+
   render() {
-    const {books, query, handleInputChange, addBook} = this.props;
+    const {query, handleInputChange, addBook} = this.props;
 
     //Filter books based on query
     const showingBooks = query === ''
-    ? books : books.filter(b =>(
+    ? this.state.booksFilter : this.state.booksFilter.filter(b =>(
       b.title.toLowerCase().includes(query.toLowerCase())
     ));
+
+    const options = ['Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS']
+    const optionsTag = options.map(tag => {
+      return (
+        <option>{tag}</option>
+      )
+    })
 
     const getAllBooks = showingBooks.map(book => {
       return(
@@ -19,7 +45,7 @@ class Search extends Component {
             <div className="book-top">
               <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
               <div className="book-shelf-changer">
-                <select onChange={(e) => addBook(e, book.id)}>
+                <select onChange={(e) => addBook(e, book)}>
                   <option value="move">Move to...</option>
                   <option value="currentlyReading">Currently Reading</option>
                   <option value="wantToRead">Want to Read</option>
@@ -28,7 +54,14 @@ class Search extends Component {
               </div>
             </div>
             <div className="book-title">{book.title}</div>
-            <div className="book-authors">{book.authors[0]}</div>
+            { book.authors !== undefined && (
+                book.authors.map(item => {
+                  return (
+                    <div className="book-authors">{item}</div>
+                  )
+                })
+              )
+            }
           </div>
         </li>
       )
@@ -55,6 +88,12 @@ class Search extends Component {
             <div className="search-books-results">
               <ol className="books-grid"></ol>
             </div>
+            </div>
+            <div className="dropdown-category">
+            <h2 className="category-title">What kind of book would you like?</h2>
+            <select className="category" onChange={(e) => this.choiceMade(e)}>
+              {optionsTag}
+            </select>
             </div>
             <ol className="books-grid">
               {getAllBooks}

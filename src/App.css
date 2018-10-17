@@ -99,6 +99,14 @@ body, .app {
   font-size: 0;
 }
 
+.category-title{
+  margin: 0 30%;
+}
+
+.category{
+  margin: 2% 38%;
+}
+
 .search-books-results {
   padding: 80px 10px 20px;
 }
