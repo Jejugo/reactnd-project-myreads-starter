@@ -48,8 +48,8 @@ class BooksApp extends Component {
   }
 
   changeShelf = (e, id) => {
+    //delete book temporarily from shelf if selected none
     if(e.target.value === 'none'){
-      //continuar daqui!
       const aux = this.state.books.filter(book => {
         return book.id !== id
       });
@@ -63,7 +63,8 @@ class BooksApp extends Component {
 
       aux.find(bookItem => {
         if (bookItem.id === id){
-          bookItem.shelf = e.target.value;
+          bookItem.shelf = e.target.value; 
+          BooksAPI.update(bookItem, e.target.value);
         }
       });
 
@@ -87,16 +88,43 @@ class BooksApp extends Component {
     });
   }
 
+
+//methods used for creating an array with authors with IDs. 
+  generateUniqueId = (array) => {
+    const arrayId = [];
+    let count = 0;
+    array.forEach(item => {
+      arrayId.push({name: item, id: count});
+      count++;
+    })
+    return arrayId;
+  }
+
+  renderAuthors = (book) => {
+    let authorsId = []
+    if(book.authors !== undefined){
+      const authors = this.generateUniqueId(book.authors);
+      authorsId = authors.map(item => {
+        return (
+          <div className="book-authors" key={item.id}>{item.name}</div>
+        )
+      })
+    }
+
+    return authorsId;
+  }
+
+
   render() {
-    const {books, query, currentlyReading, wantToRead, read, success, changeSuccess} = this.state;
+    const {books, query, currentlyReading, wantToRead, read, success} = this.state;
 
     return (
       <div className="app">
           <Route path='/search' render={() => (
-            <Search books={books} query={query} handleInputChange={this.handleInputChange} addBook={this.addBook} success={success} changeSuccess={this.changeSuccess}></Search>
+            <Search books={books} query={query} handleInputChange={this.handleInputChange} addBook={this.addBook} success={success} changeSuccess={this.changeSuccess} renderAuthors={this.renderAuthors} generateUniqueId={this.generateUniqueId}></Search>
           )}></Route>
           <Route exact path='/' render={() => (
-            <Home changeShelf={this.changeShelf} currentlyReading={currentlyReading} wantToRead={wantToRead} read={read} books={books} ></Home>
+            <Home changeShelf={this.changeShelf} currentlyReading={currentlyReading} wantToRead={wantToRead} read={read} books={books} renderAuthors={this.renderAuthors}></Home>
           )}></Route>
       </div>
     )

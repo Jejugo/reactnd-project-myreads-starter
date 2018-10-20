@@ -1,10 +1,10 @@
 import React, {Component}  from 'react'
 
 class BookShelfWant extends Component {
-	
+
   render() {
 
-		const {changeShelf, books} = this.props;
+		const {changeShelf, books, renderAuthors} = this.props;
 		const readingList = books.map(book => {
 			if (book.shelf === "wantToRead"){
 				return (
@@ -23,7 +23,7 @@ class BookShelfWant extends Component {
 								</div>
 							</div>
 							<div className="book-title">{book.title}</div>
-							<div className="book-authors">{book.authors[0]}</div>
+							{renderAuthors(book)}
 						</div>
 					</li>
 				)

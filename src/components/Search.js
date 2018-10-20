@@ -30,32 +30,8 @@ class Search extends Component {
     })
   }
 
-  generateUniqueId = (array) => {
-    const arrayId = [];
-    let count = 0;
-    array.forEach(item => {
-      arrayId.push({name: item, id: count});
-      count++;
-    })
-    return arrayId;
-  }
-
-  renderAuthors = (book) => {
-    let authorsId = []
-    if(book.authors !== undefined){
-      const authors = this.generateUniqueId(book.authors);
-      authorsId = authors.map(item => {
-        return (
-          <div className="book-authors" key={item.id}>{item.name}</div>
-        )
-      })
-    }
-
-    return authorsId;
-  }
-
   render() {
-    const {query, handleInputChange, addBook, success, changeSuccess} = this.props;
+    const {query, handleInputChange, addBook, success, changeSuccess, renderAuthors, generateUniqueId} = this.props;
 
     //Filter books based on query
     const showingBooks = query === ''
@@ -64,7 +40,7 @@ class Search extends Component {
     ));
 
     const options = ['Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS']
-    const optionId = this.generateUniqueId(options);
+    const optionId = generateUniqueId(options);
     const optionsTag = optionId.map(tag => {
       return (
         <option key={tag.id}>{tag.name}</option>
@@ -87,7 +63,7 @@ class Search extends Component {
               </div>
             </div>
             <div className="book-title">{book.title}</div>
-            {this.renderAuthors(book)}
+            {renderAuthors(book)}
           </div>
         </li>
       )
