@@ -28,6 +28,8 @@ class BooksApp extends Component {
           BooksAPI.update(book, e.target.value);
           delete book.shelf
         }
+
+        return 0;
       });
     }
 
@@ -39,6 +41,8 @@ class BooksApp extends Component {
           bookItem.shelf = e.target.value;
           find = true;
         }
+
+        return 0;
         });
         
         //if the book isn't on books array, change the shelf and push the book to the book array
@@ -72,6 +76,8 @@ class BooksApp extends Component {
           BooksAPI.update(bookItem, e.target.value);
           delete bookItem.shelf
         }
+
+        return null
       });
       
       this.setState({
@@ -86,6 +92,8 @@ class BooksApp extends Component {
           bookItem.shelf = e.target.value; 
           BooksAPI.update(bookItem, e.target.value);
         }
+
+        return null
       });
 
       this.setState({

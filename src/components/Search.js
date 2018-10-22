@@ -9,6 +9,12 @@ class Search extends Component {
     booksFilter: []
   }
 
+  componentDidUpdate(){
+    this.props.success === true && (
+      this.props.changeSuccess(false)
+    )
+  }
+
   componentDidMount(){
     let mainBooks = []
     BooksAPI.getAll().then(books => {
@@ -75,7 +81,7 @@ class Search extends Component {
   }
 
   render() {
-    const {query, handleInputChange, addBook, success, changeSuccess, renderAuthors, generateUniqueId} = this.props;
+    const {query, handleInputChange, addBook, renderAuthors, generateUniqueId} = this.props;
     //Filter books based on query
     const showingBooks = query === ''
     ? [] : this.state.booksFilter.filter(b =>(
@@ -99,27 +105,12 @@ class Search extends Component {
                   <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                 )}
                 <div className="book-shelf-changer">
-                  <select onChange={(e) => addBook(e, book)}>
+                  <select onChange={(e) => addBook(e, book)} value={book.shelf}>
                     <option value="move" disabled>Move to...</option>
-                    {book.shelf === 'currentlyReading' ? (
-                      <option value="currentlyReading" selected>Currently Reading</option>
-                    ): (
-                      <option value="currentlyReading">Currently Reading</option>
-                    )}
-                    {book.shelf === 'wantToRead' ? (
-                        <option value="wantToRead" selected>wantToRead</option>
-                    ): (
-                        <option value="wantToRead">wantToRead</option>
-                    )}
-                    {book.shelf === 'read' ? (
-                        <option value="read" selected>read</option>
-                    ): (
-                        <option value="read">read</option>
-                    )}
-                    {book.hasOwnProperty('shelf') ? (
-                        <option value="none">none</option>    
-                    ) : (
-                      <option value="none" selected>none</option>    
+                    <option value="currentlyReading">Currently Reading</option>
+                    <option value="wantToRead">wantToRead</option>
+                    <option value="read">read</option>
+                    <option value="none">none</option>    
                     )}
                   </select>
                 </div>
@@ -130,10 +121,6 @@ class Search extends Component {
           </li>
         )
     });
-
-    success === true && (
-      changeSuccess(false)
-    )
 
     return (
         <div>
