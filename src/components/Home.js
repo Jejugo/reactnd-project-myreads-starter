@@ -7,7 +7,6 @@ import {Link} from 'react-router-dom';
 const Home = (props) => {
 	
 	const {changeShelf, books, renderAuthors} = props;
-
 	return (
 		<div className="list-books">
 			<div className="list-books-title">

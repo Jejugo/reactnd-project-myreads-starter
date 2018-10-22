@@ -10,7 +10,29 @@ class Search extends Component {
   }
 
   componentDidMount(){
+    let mainBooks = []
+    BooksAPI.getAll().then(books => {
+      mainBooks = books;
+    });
     BooksAPI.search(this.state.choice).then(books => {
+      //loop over the array of books of the main page
+      mainBooks.forEach(item => {
+        //loop over the array of books of the API search
+        books.forEach(item2 => {
+          //if the item of the main page has same ID of the item from API search
+          if (item.id === item2.id){
+             //create a new array of API with the values from the mainPage
+             //removes the old book
+             books = books.filter(book => {
+              return book.id !== item2.id
+             }); 
+            
+             //adds the new one with the new shelf
+             books.push(item);
+          } 
+        });
+      });
+
       this.setState({
         booksFilter: books
       });
@@ -23,7 +45,29 @@ class Search extends Component {
       choice: newChoice
     });
 
+    let mainBooks = []
+    BooksAPI.getAll().then(books => {
+      mainBooks = books;
+    });
+
     BooksAPI.search(newChoice).then(books => {
+       //loop over the array of books of the main page
+      mainBooks.forEach(item => {
+        //loop over the array of books of the API search
+        books.forEach(item2 => {
+          //if the item of the main page has same ID of the item from API search
+          if (item.id === item2.id){
+             //create a new array of API with the values from the mainPage
+             //removes the old book
+             books = books.filter(book => {
+              return book.id !== item2.id
+             }); 
+            
+             //adds the new one with the new shelf
+             books.push(item);
+          } 
+        });
+      });
       this.setState({
         booksFilter: books
       });
@@ -32,10 +76,9 @@ class Search extends Component {
 
   render() {
     const {query, handleInputChange, addBook, success, changeSuccess, renderAuthors, generateUniqueId} = this.props;
-
     //Filter books based on query
     const showingBooks = query === ''
-    ? this.state.booksFilter : this.state.booksFilter.filter(b =>(
+    ? [] : this.state.booksFilter.filter(b =>(
       b.title.toLowerCase().includes(query.toLowerCase())
     ));
 
@@ -57,10 +100,27 @@ class Search extends Component {
                 )}
                 <div className="book-shelf-changer">
                   <select onChange={(e) => addBook(e, book)}>
-                    <option value="move">Move to...</option>
-                    <option value="currentlyReading">Currently Reading</option>
-                    <option value="wantToRead">Want to Read</option>
-                    <option value="read">Read</option>  
+                    <option value="move" disabled>Move to...</option>
+                    {book.shelf === 'currentlyReading' ? (
+                      <option value="currentlyReading" selected>Currently Reading</option>
+                    ): (
+                      <option value="currentlyReading">Currently Reading</option>
+                    )}
+                    {book.shelf === 'wantToRead' ? (
+                        <option value="wantToRead" selected>wantToRead</option>
+                    ): (
+                        <option value="wantToRead">wantToRead</option>
+                    )}
+                    {book.shelf === 'read' ? (
+                        <option value="read" selected>read</option>
+                    ): (
+                        <option value="read">read</option>
+                    )}
+                    {book.hasOwnProperty('shelf') ? (
+                        <option value="none">none</option>    
+                    ) : (
+                      <option value="none" selected>none</option>    
+                    )}
                   </select>
                 </div>
               </div>
@@ -71,12 +131,12 @@ class Search extends Component {
         )
     });
 
+    success === true && (
+      changeSuccess(false)
+    )
+
     return (
         <div>
-            {success === true && (
-                alert("You have added a book"),
-                changeSuccess(false)
-            )}
             <div className="search-books">
             <div className="search-books-bar">
               <Link to="/" className="close-search">Close</Link>

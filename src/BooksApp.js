@@ -9,57 +9,77 @@ class BooksApp extends Component {
 	state = {
     books: [],
     query: '',
-    success: null
+    success: null,
+    stars: ''
   };
   
   addBook = (e, book) => {
     let aux = this.state.books;
     var find = false;
-    
-    //if the book is already on books array, just change its shelf
-    aux.find(bookItem => {
-      if (bookItem.id === book.id){
-        BooksAPI.update(bookItem, e.target.value);
-        bookItem.shelf = e.target.value;
-        find = true;
-      }
-    });
-    
-    //if the book isn't on books array, change the shelf and push the book to the book array
-    if(!find){
-      book["shelf"] = e.target.value;
-      BooksAPI.update(book, e.target.value);
-      aux.push(book);
-    }
-    
-    this.setState({
-      books: aux
-    }, () => {
-      this.setState({
-        success: true
-      })
-    });
-  }
 
+    if(e.target.value === 'none'){
+      aux.find(bookItem => {
+        if (bookItem.id === book.id){
+          BooksAPI.update(bookItem,  e.target.value);
+          delete bookItem.shelf;
+          find = true;
+        }
+        if(!find){
+          BooksAPI.update(book, e.target.value);
+          delete book.shelf
+        }
+      });
+    }
+
+    else{
+      //if the book is already on books array, just change its shelf
+      aux.find(bookItem => {
+        if (bookItem.id === book.id){
+          BooksAPI.update(bookItem, e.target.value);
+          bookItem.shelf = e.target.value;
+          find = true;
+        }
+        });
+        
+        //if the book isn't on books array, change the shelf and push the book to the book array
+        if(!find){
+          book["shelf"] = e.target.value;
+          BooksAPI.update(book, e.target.value);
+          aux.push(book);
+        }
+        
+        this.setState({
+          books: aux,
+          success: true
+        });
+    }
+  }
+  
   changeSuccess = (bool) => {
     this.setState({
       success: bool
-    })
+    });
+    alert("You have added a book");
   }
 
   changeShelf = (e, id) => {
+    let aux = this.state.books;
+
     //delete book temporarily from shelf if selected none
     if(e.target.value === 'none'){
-      const aux = this.state.books.filter(book => {
-        return book.id !== id
+      aux.find(bookItem => {
+        if (bookItem.id === id){
+          BooksAPI.update(bookItem, e.target.value);
+          delete bookItem.shelf
+        }
       });
+      
       this.setState({
         books: aux
       });
     }
 
     else{
-      let aux = this.state.books;
 
       aux.find(bookItem => {
         if (bookItem.id === id){
@@ -117,11 +137,10 @@ class BooksApp extends Component {
 
   render() {
     const {books, query, currentlyReading, wantToRead, read, success} = this.state;
-
     return (
       <div className="app">
           <Route path='/search' render={() => (
-            <Search books={books} query={query} handleInputChange={this.handleInputChange} addBook={this.addBook} success={success} changeSuccess={this.changeSuccess} renderAuthors={this.renderAuthors} generateUniqueId={this.generateUniqueId}></Search>
+            <Search query={query} handleInputChange={this.handleInputChange} addBook={this.addBook} success={success} changeSuccess={this.changeSuccess} renderAuthors={this.renderAuthors} generateUniqueId={this.generateUniqueId}></Search>
           )}></Route>
           <Route exact path='/' render={() => (
             <Home changeShelf={this.changeShelf} currentlyReading={currentlyReading} wantToRead={wantToRead} read={read} books={books} renderAuthors={this.renderAuthors}></Home>
