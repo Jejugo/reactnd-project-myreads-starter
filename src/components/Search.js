@@ -145,7 +145,7 @@ class Search extends Component {
             </div>
             </div>
             <div className="dropdown-category">
-            <h2 className="category-title">What kind of book would you like?</h2>
+            <h2 className="category-title">Choose Category</h2>
             <select className="category" onChange={(e) => this.choiceMade(e)}>
               {optionsTag}
             </select>
