@@ -9,32 +9,31 @@ class Search extends Component {
     booksFilter: []
   }
 
-  componentDidUpdate(){
-    this.props.success === true && (
-      this.props.changeSuccess(false)
-    )
-  }
-
   componentDidMount(){
     let mainBooks = []
     BooksAPI.getAll().then(books => {
       mainBooks = books;
     });
     BooksAPI.search(this.state.choice).then(books => {
+      books.map(bookNone => {
+        if(!bookNone.hasOwnProperty("shelf")){
+          bookNone.shelf = 'none';
+        }
+      });
       //loop over the array of books of the main page
       mainBooks.forEach(item => {
         //loop over the array of books of the API search
         books.forEach(item2 => {
-          //if the item of the main page has same ID of the item from API search
+          //if the item of the main page has same ID of the item from API search, remove the search api book and add the one from the shelf 
           if (item.id === item2.id){
-             //create a new array of API with the values from the mainPage
-             //removes the old book
-             books = books.filter(book => {
-              return book.id !== item2.id
-             }); 
+            //create a new array of API with the values from the mainPage
+            //removes the old book
+            books = books.filter(book => {
+            return book.id !== item2.id
+            }); 
             
-             //adds the new one with the new shelf
-             books.push(item);
+            //adds the new one with the new shelf
+            books.push(item);
           } 
         });
       });
@@ -57,6 +56,11 @@ class Search extends Component {
     });
 
     BooksAPI.search(newChoice).then(books => {
+      books.map(bookNone => {
+        if(!bookNone.hasOwnProperty("shelf")){
+          bookNone.shelf = 'none';
+        }
+      });
        //loop over the array of books of the main page
       mainBooks.forEach(item => {
         //loop over the array of books of the API search
@@ -67,8 +71,8 @@ class Search extends Component {
              //removes the old book
              books = books.filter(book => {
               return book.id !== item2.id
+              
              }); 
-            
              //adds the new one with the new shelf
              books.push(item);
           } 
@@ -97,13 +101,17 @@ class Search extends Component {
     })
 
     const getAllBooks = showingBooks.map(book => {
+      console.log(book);
         return(
           <li key={book.id}>
             <div className="book">
               <div className="book-top">
-                {book.imageLinks !== undefined && (
+                {
+                  book.shelf !== 'none' && book.imageLinks !== undefined ? (
+                    <div className="book-cover-shadow" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+                  ):
                   <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
-                )}
+                }
                 <div className="book-shelf-changer">
                   <select onChange={(e) => addBook(e, book)} value={book.shelf}>
                     <option value="move" disabled>Move to...</option>
@@ -146,9 +154,12 @@ class Search extends Component {
             </div>
             <div className="dropdown-category">
             <h2 className="category-title">Choose Category</h2>
-            <select className="category" onChange={(e) => this.choiceMade(e)}>
-              {optionsTag}
-            </select>
+            <div className="category">
+              <select style={{width: "200px", height: "25px"}}onChange={(e) => this.choiceMade(e)}>
+                {optionsTag}
+              </select>
+            </div>
+            <p className="paragraphSearch">If the book is marked, then you already got it on one of your shelves.</p>
             </div>
             <ol className="books-grid">
               {getAllBooks}

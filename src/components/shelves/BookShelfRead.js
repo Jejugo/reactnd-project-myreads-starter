@@ -1,8 +1,8 @@
 import React from 'react'
+import StarRatings from 'react-star-ratings';
 
 const BookShelfRead = (props) => {
-
-  const {changeShelf, books, renderAuthors} = props;
+  const {changeShelf, books, renderAuthors, changeRating} = props;
   const readingList = books.map(book => {
     if (book.shelf === "read"){
       return (
@@ -24,6 +24,13 @@ const BookShelfRead = (props) => {
             </div>
             <div className="book-title">{book.title}</div>
             {renderAuthors(book)}
+            {book.review <= 3 ? (
+							<StarRatings rating={book.review} starRatedColor="red" changeRating={(newRating, name) => changeRating(newRating, name, book.id)} numberOfStars={5} name='rating'
+							starDimension="22px" starSpacing="2px"/>
+						) : (
+							<StarRatings rating={book.review} starRatedColor="green" changeRating={(newRating, name) => changeRating(newRating, name, book.id)} numberOfStars={5} name='rating'
+							starDimension="22px" starSpacing="2px"/>
+						)}
           </div>
         </li>
       )
