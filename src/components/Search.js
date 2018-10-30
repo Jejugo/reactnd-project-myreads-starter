@@ -11,41 +11,45 @@ class Search extends Component {
 
   componentDidMount(){
     let mainBooks = []
+    Array.prototype.isArray = true;
     BooksAPI.getAll().then(books => {
       mainBooks = books;
     });
     BooksAPI.search(this.state.choice).then(books => {
-      books.map(bookNone => {
-        if(!bookNone.hasOwnProperty("shelf")){
-          bookNone.shelf = 'none';
-        }
-      });
-      //loop over the array of books of the main page
-      mainBooks.forEach(item => {
-        //loop over the array of books of the API search
-        books.forEach(item2 => {
-          //if the item of the main page has same ID of the item from API search, remove the search api book and add the one from the shelf 
-          if (item.id === item2.id){
-            //create a new array of API with the values from the mainPage
-            //removes the old book
-            books = books.filter(book => {
-            return book.id !== item2.id
-            }); 
-            
-            //adds the new one with the new shelf
-            books.push(item);
-          } 
+      if (books.isArray){
+        books.map(bookNone => {
+          if(!bookNone.hasOwnProperty("shelf")){
+            bookNone.shelf = 'none';
+          }
         });
-      });
-
-      this.setState({
-        booksFilter: books
-      });
-    })
+        //loop over the array of books of the main page
+        mainBooks.forEach(item => {
+          //loop over the array of books of the API search
+          books.forEach(item2 => {
+            //if the item of the main page has same ID of the item from API search, remove the search api book and add the one from the shelf 
+            if (item.id === item2.id){
+              //create a new array of API with the values from the mainPage
+              //removes the old book
+              books = books.filter(book => {
+              return book.id !== item2.id
+              }); 
+              
+              //adds the new one with the new shelf
+              books.push(item);
+            } 
+          });
+        });
+  
+        this.setState({
+          booksFilter: books
+        });
+      }
+    });
   }
 
   choiceMade = (e) => {
     const newChoice = e.target.value
+    Array.prototype.isArray = true;
     this.setState({
       choice: newChoice
     });
@@ -56,32 +60,34 @@ class Search extends Component {
     });
 
     BooksAPI.search(newChoice).then(books => {
-      books.map(bookNone => {
-        if(!bookNone.hasOwnProperty("shelf")){
-          bookNone.shelf = 'none';
-        }
-      });
-       //loop over the array of books of the main page
-      mainBooks.forEach(item => {
-        //loop over the array of books of the API search
-        books.forEach(item2 => {
-          //if the item of the main page has same ID of the item from API search
-          if (item.id === item2.id){
-             //create a new array of API with the values from the mainPage
-             //removes the old book
-             books = books.filter(book => {
-              return book.id !== item2.id
-              
-             }); 
-             //adds the new one with the new shelf
-             books.push(item);
-          } 
+      if (books.isArray){
+        books.map(bookNone => {
+          if(!bookNone.hasOwnProperty("shelf")){
+            bookNone.shelf = 'none';
+          }
         });
+         //loop over the array of books of the main page
+        mainBooks.forEach(item => {
+          //loop over the array of books of the API search
+          books.forEach(item2 => {
+            //if the item of the main page has same ID of the item from API search
+            if (item.id === item2.id){
+               //create a new array of API with the values from the mainPage
+               //removes the old book
+               books = books.filter(book => {
+                return book.id !== item2.id
+                
+               }); 
+               //adds the new one with the new shelf
+               books.push(item);
+            } 
+          });
+        });
+        this.setState({
+          booksFilter: books
+        });
+      }
       });
-      this.setState({
-        booksFilter: books
-      });
-    })
   }
 
   render() {
@@ -101,7 +107,6 @@ class Search extends Component {
     })
 
     const getAllBooks = showingBooks.map(book => {
-      console.log(book);
         return(
           <li key={book.id}>
             <div className="book">
