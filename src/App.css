@@ -49,7 +49,7 @@ body, .app {
   bottom: 25px;
 }
 
-#reset-button{
+.reset-books{
   position: fixed;
   right: 65px;
   top: 140px;
@@ -72,12 +72,12 @@ body, .app {
 .reset-title{
   position: fixed;
   right: 25px;
-  top: 150px;
+  top: 155px;
   z-index: 1;
-  color: rgb(192, 25, 25);
+  color: #1857b4
 }
 
-.open-search a {
+.open-search a{
   display: block;
   width: 50px;
   height: 50px;
