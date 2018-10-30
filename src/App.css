@@ -48,6 +48,35 @@ body, .app {
   right: 25px;
   bottom: 25px;
 }
+
+#reset-button{
+  position: fixed;
+  right: 65px;
+  top: 140px;
+  z-index: 1;
+}
+
+#reset-button {
+  display: block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-image: url('./icons/minus.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 30px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  font-size: 0;
+}
+
+.reset-title{
+  position: fixed;
+  right: 25px;
+  top: 150px;
+  z-index: 1;
+  color: rgb(192, 25, 25);
+}
+
 .open-search a {
   display: block;
   width: 50px;
@@ -57,7 +86,7 @@ body, .app {
   background-image: url('./icons/add.svg');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 28px;
+  background-size: 50px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   font-size: 0;
 }

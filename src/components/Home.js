@@ -17,6 +17,15 @@ class Home extends Component {
 				</div>
 				<div className="list-books-content">
 					<h5 style={{textAlign: "center", width: "100%", fontSize: "20px"}}>Do not forget to rate the books you have!</h5>
+					<a id="reset-button" href="#" onClick={() =>{
+							console.log("clicou");
+							localStorage.clear(); 
+							window.location.reload();
+						}}><div className='reset-books'>
+					</div></a>
+					<div className='reset-title'>
+							<h3>Reset Button</h3>
+						</div>
 					<div>
 						<BookShelfCurrent changeShelf={changeShelf} books={books} renderAuthors={renderAuthors} changeRating={changeRating}></BookShelfCurrent>
 						<BookShelfWant changeShelf={changeShelf} books={books} renderAuthors={renderAuthors} changeRating={changeRating} modal={modal} closeModal={closeModal} openModal={openModal}></BookShelfWant>
