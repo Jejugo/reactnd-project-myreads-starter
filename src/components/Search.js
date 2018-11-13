@@ -22,6 +22,8 @@ class Search extends Component {
           if(!bookNone.hasOwnProperty("shelf")){
             bookNone.shelf = 'none';
           }
+
+          return null;
         });
         //loop over the array of books of the main page
         mainBooks.forEach(item => {
@@ -66,6 +68,7 @@ class Search extends Component {
           if(!bookNone.hasOwnProperty("shelf")){
             bookNone.shelf = 'none';
           }
+          return null;
         });
          //loop over the array of books of the main page
         mainBooks.forEach(item => {

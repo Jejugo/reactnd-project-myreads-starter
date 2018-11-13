@@ -18,7 +18,7 @@ class Home extends Component {
 				<div className="list-books-content">
 					<h5 style={{textAlign: "center", width: "100%", fontSize: "20px"}}>Do not forget to rate the books you have!</h5>
 					<div className='reset-books'>
-					<a id="reset-button" href="#" onClick={() =>{
+					<a id="reset-button" onClick={() =>{
 							console.log("clicou");
 							localStorage.clear(); 
 							window.location.reload();
